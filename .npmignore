@@ -1,0 +1,8 @@
+src/
+credentials/
+nodes/
+.github/
+tsconfig.json
+copy-assets.js
+.gitignore
+*.tsbuildinfo

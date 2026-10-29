@@ -1,0 +1,22 @@
+{
+  "node": "n8n-nodes-german-b2b.germanB2bSuite",
+  "nodeVersion": "1.0",
+  "codex": {
+    "categories": [
+      "Development",
+      "Lead Generation",
+      "Sales & Marketing",
+      "Finance & Accounting"
+    ],
+    "subcategories": {
+      "Development": ["German Compliance", "B2B Data", "Data Extraction"]
+    },
+    "resources": {
+      "primaryDocumentation": [
+        {
+          "url": "https://github.com/andregrunert-ctrl/n8n-nodes-german-b2b#readme"
+        }
+      ]
+    }
+  }
+}
