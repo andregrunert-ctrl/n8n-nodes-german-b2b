@@ -203,6 +203,12 @@ export class GermanB2bSuite implements INodeType {
 						action: 'Generate e-invoice pdf and xml',
 					},
 					{
+						name: 'Embed XML into PDF',
+						value: 'embedInvoice',
+						description: 'Embed ZUGFeRD / Factur-X XML into an existing corporate PDF invoice',
+						action: 'Embed xml invoice into pdf',
+					},
+					{
 						name: 'Extract XML / Validate',
 						value: 'extractXml',
 						description: 'Extract embedded CII / UBL XML from electronic invoice PDF and validate',
@@ -310,7 +316,7 @@ export class GermanB2bSuite implements INodeType {
 						operation: ['enrichDomains'],
 					},
 				},
-				default: 'personio.de, celonis.com',
+				default: 'biontech.de, celonis.com, deepl.com',
 				description: 'One or multiple German domains, separated by commas or newlines',
 			},
 			{
@@ -483,6 +489,19 @@ export class GermanB2bSuite implements INodeType {
 				description: 'Procurement category filter',
 			},
 			{
+				displayName: 'City / Location (Optional)',
+				name: 'tenderCity',
+				type: 'string',
+				displayOptions: {
+					show: {
+						resource: ['tenders'],
+						operation: ['searchTenders'],
+					},
+				},
+				default: '',
+				description: 'City name or 5-digit postal code of performance (e.g. München, Berlin, 04109)',
+			},
+			{
 				displayName: 'Max Items',
 				name: 'maxTenderItems',
 				type: 'number',
@@ -494,6 +513,19 @@ export class GermanB2bSuite implements INodeType {
 				},
 				default: 25,
 				description: 'Maximum number of tender notices to return',
+			},
+			{
+				displayName: 'Include Details',
+				name: 'includeTenderDetails',
+				type: 'boolean',
+				displayOptions: {
+					show: {
+						resource: ['tenders'],
+						operation: ['searchTenders'],
+					},
+				},
+				default: true,
+				description: 'Whether to fetch deep tender notice details, CPV codes and platform links',
 			},
 
 			// ==========================================
@@ -525,6 +557,19 @@ export class GermanB2bSuite implements INodeType {
 				},
 				default: '',
 				description: 'City or Amtsgericht name (optional)',
+			},
+			{
+				displayName: 'Postal Code (PLZ) (Optional)',
+				name: 'zvgPostalCode',
+				type: 'string',
+				displayOptions: {
+					show: {
+						resource: ['zvg'],
+						operation: ['searchForeclosures'],
+					},
+				},
+				default: '',
+				description: '5-digit German postal code filter (e.g. 04109, 10115)',
 			},
 			{
 				displayName: 'Property Type',
@@ -589,6 +634,32 @@ export class GermanB2bSuite implements INodeType {
 				default: 0,
 				description: 'Maximum property appraisal value in EUR (0 = no limit)',
 			},
+			{
+				displayName: 'Include Details',
+				name: 'includeZvgDetails',
+				type: 'boolean',
+				displayOptions: {
+					show: {
+						resource: ['zvg'],
+						operation: ['searchForeclosures'],
+					},
+				},
+				default: true,
+				description: 'Whether to fetch full court description, room and valuation report PDF links',
+			},
+			{
+				displayName: 'Include Cancelled Auctions',
+				name: 'includeCancelled',
+				type: 'boolean',
+				displayOptions: {
+					show: {
+						resource: ['zvg'],
+						operation: ['searchForeclosures'],
+					},
+				},
+				default: false,
+				description: 'Whether to include cancelled or revoked foreclosure notices',
+			},
 
 			// ==========================================
 			// RESOURCE 6: ZUGFeRD / XRechnung Parameters
@@ -601,7 +672,7 @@ export class GermanB2bSuite implements INodeType {
 				displayOptions: {
 					show: {
 						resource: ['zugferd'],
-						operation: ['generateInvoice'],
+						operation: ['generateInvoice', 'embedInvoice'],
 					},
 				},
 				options: [
@@ -621,7 +692,7 @@ export class GermanB2bSuite implements INodeType {
 				displayOptions: {
 					show: {
 						resource: ['zugferd'],
-						operation: ['generateInvoice'],
+						operation: ['generateInvoice', 'embedInvoice'],
 					},
 				},
 				default: JSON.stringify(
@@ -629,25 +700,33 @@ export class GermanB2bSuite implements INodeType {
 						invoice_number: 'INV-2026-001',
 						issue_date: '2026-10-30',
 						due_date: '2026-11-30',
+						buyer_reference: '991-12345-56',
 						currency: 'EUR',
 						seller: {
 							name: 'Muster Consulting GmbH',
 							street: 'Hauptstraße 42',
+							zip_code: '10115',
 							postal_code: '10115',
 							city: 'Berlin',
+							country: 'DE',
 							country_code: 'DE',
 							vat_id: 'DE123456789',
 							iban: 'DE02120300000000202020',
 							bic: 'BYLADEM1001',
+							contact_name: 'Max Mustermann',
+							phone: '+49 30 12345678',
 							email: 'billing@muster-consulting.de',
 						},
 						buyer: {
 							name: 'Kunde AG',
 							street: 'Kundenweg 10',
+							zip_code: '80331',
 							postal_code: '80331',
 							city: 'München',
+							country: 'DE',
 							country_code: 'DE',
 							vat_id: 'DE987654321',
+							email: 'rechnungseingang@kunde.de',
 						},
 						line_items: [
 							{
@@ -676,7 +755,7 @@ export class GermanB2bSuite implements INodeType {
 				displayOptions: {
 					show: {
 						resource: ['zugferd'],
-						operation: ['extractXml'],
+						operation: ['embedInvoice', 'extractXml'],
 					},
 				},
 				default: '',
@@ -689,7 +768,7 @@ export class GermanB2bSuite implements INodeType {
 				displayOptions: {
 					show: {
 						resource: ['zugferd'],
-						operation: ['extractXml'],
+						operation: ['embedInvoice', 'extractXml'],
 					},
 				},
 				default: '',
@@ -705,7 +784,7 @@ export class GermanB2bSuite implements INodeType {
 				type: 'json',
 				displayOptions: {
 					show: {
-						resource: ['b2bLeads', 'impressum', 'kyb', 'tenders', 'zvg'],
+						resource: ['b2bLeads', 'impressum', 'kyb', 'tenders', 'zvg', 'zugferd'],
 					},
 				},
 				default: '',
@@ -801,12 +880,16 @@ export class GermanB2bSuite implements INodeType {
 						.map((s) => s.trim())
 						.filter(Boolean);
 
+					const tenderCity = this.getNodeParameter('tenderCity', i, '') as string;
+					const includeTenderDetails = this.getNodeParameter('includeTenderDetails', i, true) as boolean;
+
 					payload = {
 						keywords: keywordsList.length > 0 ? keywordsList : ['Software'],
 						states: statesList.length > 0 ? statesList : ['ALL'],
 						service_type: serviceType,
+						city: tenderCity || undefined,
 						max_items: maxItems,
-						include_details: true,
+						include_details: includeTenderDetails,
 					};
 				} else if (resource === 'zvg') {
 					actorSlug = 'AGrunert~german-real-estate-foreclosure-zvg-scraper';
@@ -822,15 +905,20 @@ export class GermanB2bSuite implements INodeType {
 						.map((s) => s.trim().toLowerCase())
 						.filter(Boolean);
 
+					const zvgPostalCode = this.getNodeParameter('zvgPostalCode', i, '') as string;
+					const includeZvgDetails = this.getNodeParameter('includeZvgDetails', i, true) as boolean;
+					const includeCancelled = this.getNodeParameter('includeCancelled', i, false) as boolean;
+
 					payload = {
 						states: statesList.length > 0 ? statesList : ['nw'],
 						city: zvgCity || undefined,
+						postal_code: zvgPostalCode || undefined,
 						property_type: propertyType,
 						max_items: maxItems,
 						min_market_value: minMarketValue > 0 ? minMarketValue : undefined,
 						max_market_value: maxMarketValue > 0 ? maxMarketValue : undefined,
-						include_details: true,
-						include_cancelled: false,
+						include_details: includeZvgDetails,
+						include_cancelled: includeCancelled,
 					};
 				} else if (resource === 'zugferd') {
 					actorSlug = 'AGrunert~german-e-invoice-zugferd-xrechnung-suite';
@@ -851,6 +939,27 @@ export class GermanB2bSuite implements INodeType {
 							profile,
 							invoice_data: parsedInvoiceData,
 						};
+					} else if (operation === 'embedInvoice') {
+						const profile = this.getNodeParameter('profile', i, 'EN16931') as string;
+						const fileUrl = this.getNodeParameter('fileUrl', i, '') as string;
+						const fileBase64OrXml = this.getNodeParameter('fileBase64OrXml', i, '') as string;
+						const invoiceDataRaw = this.getNodeParameter('invoiceDataJson', i, '') as string | IDataObject;
+
+						let parsedInvoiceData: IDataObject | undefined;
+						if (invoiceDataRaw) {
+							parsedInvoiceData = typeof invoiceDataRaw === 'string' ? JSON.parse(invoiceDataRaw) : invoiceDataRaw;
+						}
+
+						const isXml = fileBase64OrXml && fileBase64OrXml.trim().startsWith('<');
+
+						payload = {
+							operation: 'embed',
+							profile,
+							file_url: fileUrl || undefined,
+							file_base64: !isXml && fileBase64OrXml ? fileBase64OrXml : undefined,
+							xml_base64: isXml ? Buffer.from(fileBase64OrXml).toString('base64') : undefined,
+							invoice_data: parsedInvoiceData,
+						};
 					} else if (operation === 'extractXml') {
 						const fileUrl = this.getNodeParameter('fileUrl', i, '') as string;
 						const fileBase64OrXml = this.getNodeParameter('fileBase64OrXml', i, '') as string;
@@ -860,8 +969,7 @@ export class GermanB2bSuite implements INodeType {
 						payload = {
 							operation: 'extract',
 							file_url: fileUrl || undefined,
-							file_base64: !isXml && fileBase64OrXml ? fileBase64OrXml : undefined,
-							xml_base64: isXml ? Buffer.from(fileBase64OrXml).toString('base64') : undefined,
+							file_base64: isXml ? Buffer.from(fileBase64OrXml).toString('base64') : (fileBase64OrXml || undefined),
 						};
 					}
 				}
