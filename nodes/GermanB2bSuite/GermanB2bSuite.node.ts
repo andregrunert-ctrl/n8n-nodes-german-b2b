@@ -637,6 +637,8 @@ export class GermanB2bSuite implements INodeType {
 							city: 'Berlin',
 							country_code: 'DE',
 							vat_id: 'DE123456789',
+							iban: 'DE02120300000000202020',
+							bic: 'BYLADEM1001',
 							email: 'billing@muster-consulting.de',
 						},
 						buyer: {

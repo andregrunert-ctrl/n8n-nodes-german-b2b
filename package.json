@@ -1,6 +1,6 @@
 {
     "name":  "n8n-nodes-german-b2b",
-    "version":  "1.0.1",
+    "version":  "1.0.2",
     "description":  "Official n8n community node for the German B2B Data \u0026 Compliance Suite (Handelsregister, KYB, Insolvenz, Impressum, ZUGFeRD, XRechnung, ZVG, Tenders, Leads)",
     "keywords":  [
                      "n8n-community-node-package",
