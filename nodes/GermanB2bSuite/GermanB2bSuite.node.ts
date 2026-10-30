@@ -203,16 +203,10 @@ export class GermanB2bSuite implements INodeType {
 						action: 'Generate e-invoice pdf and xml',
 					},
 					{
-						name: 'Extract XML',
+						name: 'Extract XML / Validate',
 						value: 'extractXml',
-						description: 'Extract embedded CII / UBL XML from electronic invoice PDF',
+						description: 'Extract embedded CII / UBL XML from electronic invoice PDF and validate',
 						action: 'Extract xml from e-invoice pdf',
-					},
-					{
-						name: 'Validate E-Invoice',
-						value: 'validateInvoice',
-						description: 'Validate against official EN 16931 and KoSIT Schematron rules',
-						action: 'Validate e-invoice',
 					},
 				],
 				default: 'generateInvoice',
@@ -400,11 +394,12 @@ export class GermanB2bSuite implements INodeType {
 					},
 				},
 				options: [
-					{ name: 'HRB (GmbH, AG, UG)', value: 'HRB' },
-					{ name: 'HRA (Einzelunternehmen, KG, OHG)', value: 'HRA' },
-					{ name: 'VR (Vereine)', value: 'VR' },
-					{ name: 'GnR (Genossenschaften)', value: 'GnR' },
-					{ name: 'All Registers', value: 'All' },
+					{ name: 'All Register Types', value: 'ALL' },
+					{ name: 'HRB (Handelsregister B - GmbH, AG, SE)', value: 'HRB' },
+					{ name: 'HRA (Handelsregister A - Einzelunternehmen, KG, OHG)', value: 'HRA' },
+					{ name: 'GnR (Genossenschaftsregister)', value: 'GnR' },
+					{ name: 'PR (Partnerschaftsregister)', value: 'PR' },
+					{ name: 'VR (Vereinsregister)', value: 'VR' },
 				],
 				default: 'HRB',
 				description: 'Type of German court register',
@@ -450,8 +445,8 @@ export class GermanB2bSuite implements INodeType {
 						operation: ['searchTenders'],
 					},
 				},
-				default: 'IT-Dienstleistungen',
-				description: 'Search keywords for public procurement notices',
+				default: 'IT-Dienstleistungen, Software',
+				description: 'Search keywords for public procurement notices (comma-separated)',
 			},
 			{
 				displayName: 'German States',
@@ -477,10 +472,12 @@ export class GermanB2bSuite implements INodeType {
 					},
 				},
 				options: [
-					{ name: 'All Types', value: 'ALL' },
-					{ name: 'Dienstleistungen (Services)', value: 'DIENSTLEISTUNG' },
-					{ name: 'Lieferleistungen (Supplies)', value: 'LIEFERLEISTUNG' },
-					{ name: 'Bauleistungen (Construction)', value: 'BAULEISTUNG' },
+					{ name: 'All Service Types (Alle Leistungsarten)', value: 'ALL' },
+					{ name: 'Dienstleistungen (Services)', value: 'Dienstleistungen' },
+					{ name: 'Bauleistungen (Construction)', value: 'Bauleistungen' },
+					{ name: 'Lieferleistungen (Supplies & Deliveries)', value: 'Lieferleistungen' },
+					{ name: 'Informationstechnik (IT)', value: 'Informationstechnik' },
+					{ name: 'Forschung und Entwicklung (R&D)', value: 'Forschung und Entwicklung' },
 				],
 				default: 'ALL',
 				description: 'Procurement category filter',
@@ -513,8 +510,8 @@ export class GermanB2bSuite implements INodeType {
 						operation: ['searchForeclosures'],
 					},
 				},
-				default: 'NW',
-				description: 'State code (e.g. NW for NRW, BY for Bayern, BE for Berlin, BW, HE)',
+				default: 'nw',
+				description: 'State code (e.g. nw for NRW, by for Bayern, be for Berlin, sn for Sachsen)',
 			},
 			{
 				displayName: 'City / Court',
@@ -540,12 +537,15 @@ export class GermanB2bSuite implements INodeType {
 					},
 				},
 				options: [
-					{ name: 'All Property Types', value: 'ALL' },
-					{ name: 'Wohnung (Condominium)', value: 'WOHNUNG' },
-					{ name: 'Einfamilienhaus (Single Family Home)', value: 'EINFAMILIENHAUS' },
-					{ name: 'Mehrfamilienhaus (Multi-Family Apartment Building)', value: 'MEHRFAMILIENHAUS' },
-					{ name: 'Gewerbeimmobilie (Commercial Property)', value: 'GEWERBE' },
-					{ name: 'Grundstück (Land / Plot)', value: 'GRUNDSTUECK' },
+					{ name: 'All Property Types (Alle Objektarten)', value: 'ALL' },
+					{ name: 'Eigentumswohnung (Condominium / Apartment)', value: 'Eigentumswohnung' },
+					{ name: 'Einfamilienhaus (Single-Family House)', value: 'Einfamilienhaus' },
+					{ name: 'Mehrfamilienhaus (Multi-Family House / Building)', value: 'Mehrfamilienhaus' },
+					{ name: 'Doppelhaushälfte (Semi-Detached House)', value: 'Doppelhaushälfte' },
+					{ name: 'Reihenhaus (Terraced House)', value: 'Reihenhaus' },
+					{ name: 'Gewerbe (Commercial / Office)', value: 'Gewerbe' },
+					{ name: 'Grundstück (Land / Plot)', value: 'Grundstück' },
+					{ name: 'Garage / Stellplatz (Parking)', value: 'Garage' },
 				],
 				default: 'ALL',
 				description: 'Type of auctioned property',
@@ -605,14 +605,12 @@ export class GermanB2bSuite implements INodeType {
 					},
 				},
 				options: [
-					{ name: 'COMFORT (EN 16931 - Standard EU CIUS)', value: 'COMFORT' },
+					{ name: 'EN16931 (Comfort / EU Standard)', value: 'EN16931' },
 					{ name: 'XRECHNUNG_3_0 (German B2G & B2B Mandate 2025/2026)', value: 'XRECHNUNG_3_0' },
-					{ name: 'EXTENDED (Comprehensive Business Details)', value: 'EXTENDED' },
-					{ name: 'BASIC (Standard B2B)', value: 'BASIC' },
-					{ name: 'BASIC_WL (Without Lines)', value: 'BASIC_WL' },
-					{ name: 'MINIMUM (Cross-border Header Level)', value: 'MINIMUM' },
+					{ name: 'EXTENDED (Full Business Details)', value: 'EXTENDED' },
+					{ name: 'BASIC (Structured B2B Data)', value: 'BASIC' },
 				],
-				default: 'COMFORT',
+				default: 'EN16931',
 				description: 'Official ZUGFeRD 2.2 / Factur-X / XRechnung compliance profile',
 			},
 			{
@@ -629,8 +627,8 @@ export class GermanB2bSuite implements INodeType {
 				default: JSON.stringify(
 					{
 						invoice_number: 'INV-2026-001',
-						issue_date: '2026-10-29',
-						due_date: '2026-11-29',
+						issue_date: '2026-10-30',
+						due_date: '2026-11-30',
 						currency: 'EUR',
 						seller: {
 							name: 'Muster Consulting GmbH',
@@ -676,7 +674,7 @@ export class GermanB2bSuite implements INodeType {
 				displayOptions: {
 					show: {
 						resource: ['zugferd'],
-						operation: ['extractXml', 'validateInvoice'],
+						operation: ['extractXml'],
 					},
 				},
 				default: '',
@@ -689,7 +687,7 @@ export class GermanB2bSuite implements INodeType {
 				displayOptions: {
 					show: {
 						resource: ['zugferd'],
-						operation: ['extractXml', 'validateInvoice'],
+						operation: ['extractXml'],
 					},
 				},
 				default: '',
@@ -791,21 +789,26 @@ export class GermanB2bSuite implements INodeType {
 					const serviceType = this.getNodeParameter('serviceType', i, 'ALL') as string;
 					const maxItems = this.getNodeParameter('maxTenderItems', i, 25) as number;
 
+					const keywordsList = keywords
+						.split(/[\n,]/)
+						.map((k) => k.trim())
+						.filter(Boolean);
+
 					const statesList = states
 						.split(/[\n,]/)
 						.map((s) => s.trim())
 						.filter(Boolean);
 
 					payload = {
-						keywords,
-						states: statesList,
+						keywords: keywordsList.length > 0 ? keywordsList : ['Software'],
+						states: statesList.length > 0 ? statesList : ['ALL'],
 						service_type: serviceType,
 						max_items: maxItems,
 						include_details: true,
 					};
 				} else if (resource === 'zvg') {
 					actorSlug = 'AGrunert~german-real-estate-foreclosure-zvg-scraper';
-					const zvgStates = this.getNodeParameter('zvgStates', i, 'NW') as string;
+					const zvgStates = this.getNodeParameter('zvgStates', i, 'nw') as string;
 					const zvgCity = this.getNodeParameter('zvgCity', i, '') as string;
 					const propertyType = this.getNodeParameter('propertyType', i, 'ALL') as string;
 					const maxItems = this.getNodeParameter('maxZvgItems', i, 25) as number;
@@ -814,13 +817,13 @@ export class GermanB2bSuite implements INodeType {
 
 					const statesList = zvgStates
 						.split(/[\n,]/)
-						.map((s) => s.trim().toUpperCase())
+						.map((s) => s.trim().toLowerCase())
 						.filter(Boolean);
 
 					payload = {
-						states: statesList.length > 0 ? statesList : ['NW'],
+						states: statesList.length > 0 ? statesList : ['nw'],
 						city: zvgCity || undefined,
-						property_type: propertyType === 'ALL' ? undefined : propertyType,
+						property_type: propertyType,
 						max_items: maxItems,
 						min_market_value: minMarketValue > 0 ? minMarketValue : undefined,
 						max_market_value: maxMarketValue > 0 ? maxMarketValue : undefined,
@@ -831,7 +834,7 @@ export class GermanB2bSuite implements INodeType {
 					actorSlug = 'AGrunert~german-e-invoice-zugferd-xrechnung-suite';
 
 					if (operation === 'generateInvoice') {
-						const profile = this.getNodeParameter('profile', i, 'COMFORT') as string;
+						const profile = this.getNodeParameter('profile', i, 'EN16931') as string;
 						const invoiceDataRaw = this.getNodeParameter('invoiceDataJson', i) as string | IDataObject;
 						let parsedInvoiceData: IDataObject;
 
@@ -842,7 +845,7 @@ export class GermanB2bSuite implements INodeType {
 						}
 
 						payload = {
-							operation: 'generate_pdf_invoice',
+							operation: 'generate',
 							profile,
 							invoice_data: parsedInvoiceData,
 						};
@@ -850,19 +853,10 @@ export class GermanB2bSuite implements INodeType {
 						const fileUrl = this.getNodeParameter('fileUrl', i, '') as string;
 						const fileBase64OrXml = this.getNodeParameter('fileBase64OrXml', i, '') as string;
 
-						payload = {
-							operation: 'extract_xml',
-							file_url: fileUrl || undefined,
-							file_base64: fileBase64OrXml || undefined,
-						};
-					} else if (operation === 'validateInvoice') {
-						const fileUrl = this.getNodeParameter('fileUrl', i, '') as string;
-						const fileBase64OrXml = this.getNodeParameter('fileBase64OrXml', i, '') as string;
-
 						const isXml = fileBase64OrXml && fileBase64OrXml.trim().startsWith('<');
 
 						payload = {
-							operation: 'validate_invoice',
+							operation: 'extract',
 							file_url: fileUrl || undefined,
 							file_base64: !isXml && fileBase64OrXml ? fileBase64OrXml : undefined,
 							xml_base64: isXml ? Buffer.from(fileBase64OrXml).toString('base64') : undefined,
