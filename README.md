@@ -14,6 +14,16 @@ Official **n8n Community Node** for the German & DACH B2B Data & Compliance Suit
 
 ---
 
+## 🎥 48-Second Live Video Showcase (1080p HD)
+
+[![Watch German B2B Data Suite Live Video Showcase](https://raw.githubusercontent.com/andregrunert-ctrl/german-b2b-data-suite/main/docs/b2b_showcase_banner.png)](https://youtu.be/ERydgz1hGk8)
+
+*Automate German B2B lead generation, GDPR-compliant impressum enrichment (§ 5 DDG), real-time Handelsregister (XJustiz) & insolvency KYB audits, ZVG foreclosures, and public tenders via n8n workflows.*
+
+> 💡 **Looking for E-Invoicing?** Watch our [45-second ZUGFeRD & XRechnung Live Demo](https://youtu.be/xkDNnPjQxRo) on YouTube.
+
+---
+
 ## 🚀 Installation
 
 ### In your n8n Instance (Community Nodes UI)
