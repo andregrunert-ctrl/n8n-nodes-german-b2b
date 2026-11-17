@@ -14,6 +14,9 @@
     "resources": {
       "primaryDocumentation": [
         {
+          "url": "https://apify.com/agrunert"
+        },
+        {
           "url": "https://github.com/andregrunert-ctrl/n8n-nodes-german-b2b#readme"
         }
       ]

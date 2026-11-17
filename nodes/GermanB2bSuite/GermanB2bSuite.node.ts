@@ -796,10 +796,18 @@ export class GermanB2bSuite implements INodeType {
 	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
 		const items = this.getInputData();
 		const returnData: INodeExecutionData[] = [];
-		const credentials = await this.getCredentials('germanB2bApi');
+		const credentials = await this.getCredentials('germanB2bApi').catch(() => undefined);
 
-		if (!credentials?.apiToken) {
-			throw new NodeOperationError(this.getNode(), 'No Apify API Token provided in credentials.');
+		const apiToken = typeof credentials?.apiToken === 'string' ? credentials.apiToken.trim() : '';
+		if (!apiToken || apiToken === 'YOUR_APIFY_TOKEN') {
+			throw new NodeOperationError(
+				this.getNode(),
+				'Missing APIFY_TOKEN in "German B2B Apify API" credentials. Get your free Apify API token ($5/month free credits) at https://console.apify.com/account/integrations — and test all 6 live actors & 13 working Public Tasks at https://apify.com/agrunert',
+				{
+					description:
+						'Create a free Apify account at https://console.apify.com/account/integrations, copy your personal API token (apify_api_...), and add it to the German B2B Apify API credential. Ready-to-run Public Tasks: https://apify.com/agrunert',
+				},
+			);
 		}
 
 		for (let i = 0; i < items.length; i++) {
@@ -992,7 +1000,7 @@ export class GermanB2bSuite implements INodeType {
 					method: 'POST',
 					url: endpointUrl,
 					headers: {
-						Authorization: `Bearer ${credentials.apiToken}`,
+						Authorization: `Bearer ${apiToken}`,
 						'Content-Type': 'application/json',
 					},
 					body: payload,
@@ -1014,15 +1022,20 @@ export class GermanB2bSuite implements INodeType {
 					});
 				}
 			} catch (error) {
+				const rawMessage = (error as Error).message || String(error);
+				const isAuthErr = /\b(401|403)\b|unauthorized|invalid token|user was not found/i.test(rawMessage);
+				const friendlyMessage = isAuthErr
+					? `${rawMessage} — Verify or create a free Apify API token ($5/mo credits) at https://console.apify.com/account/integrations | Public Tasks: https://apify.com/agrunert`
+					: rawMessage;
 				if (this.continueOnFail()) {
 					returnData.push({
 						json: {
-							error: (error as Error).message || String(error),
+							error: friendlyMessage,
 						},
 						pairedItem: { item: i },
 					});
 				} else {
-					throw new NodeOperationError(this.getNode(), error as Error, { itemIndex: i });
+					throw new NodeOperationError(this.getNode(), isAuthErr ? friendlyMessage : (error as Error), { itemIndex: i });
 				}
 			}
 		}

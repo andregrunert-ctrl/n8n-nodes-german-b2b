@@ -7,7 +7,7 @@ import {
 export class GermanB2bApi implements ICredentialType {
 	name = 'germanB2bApi';
 	displayName = 'German B2B Apify API';
-	documentationUrl = 'https://docs.apify.com/platform/integrations/api';
+	documentationUrl = 'https://apify.com/agrunert';
 	properties: INodeProperties[] = [
 		{
 			displayName: 'Apify API Token',
@@ -16,7 +16,8 @@ export class GermanB2bApi implements ICredentialType {
 			typeOptions: { password: true },
 			default: '',
 			required: true,
-			description: 'Personal Apify API token (starts with apify_api_...). Find it in Apify Console under Settings -> Integrations.',
+			description:
+				'Free personal Apify API token (starts with apify_api_...). Get your free token ($5/month free credits) at https://console.apify.com/account/integrations — test all 6 actors & 13 public tasks at https://apify.com/agrunert',
 		},
 	];
 

@@ -41,24 +41,28 @@ npm install n8n-nodes-german-b2b
 
 ---
 
-## 🔑 Authentication
+## 🔑 Authentication & 13 Turnkey Public Tasks
 
-1. In n8n, create a new credential of type **German B2B Apify API**.
-2. Enter your **Apify API Token** (found at [Apify Console > Settings > Integrations](https://console.apify.com/account/integrations)).
-3. Save the credential.
+All 6 Apify Cloud Actors are **live, KYC-verified, and immediately executable by external Apify accounts** (including Apify's free tier with **$5/month free Starter credits**):
+
+1. Get your free personal token at [**Apify Console > Settings > Integrations**](https://console.apify.com/account/integrations).
+2. In n8n, create a new credential of type **German B2B Apify API** and paste your **Apify API Token** (`apify_api_...`).
+3. Browse & test all **6 Actors and 13 ready-to-run Public Tasks** at [**apify.com/agrunert**](https://apify.com/agrunert) (full task links in [`german-b2b-data-suite`](https://github.com/andregrunert-ctrl/german-b2b-data-suite#13-turnkey-public-tasks)).
 
 ---
 
 ## 💡 Available Resources & Operations
 
-| Resource | Operation | Apify Actor Backing |
+| Resource | Operation | Apify Actor Store Link |
 | :--- | :--- | :--- |
-| **B2B Directory Leads** | Search Directory Leads | `german-b2b-leads-directory-scraper` |
-| **Impressum & CEO Enricher** | Enrich Domains | `german-impressum-b2b-lead-enricher` |
-| **Handelsregister & Insolvency KYB** | Verify Company | `german-company-kyb-insolvency-scraper` |
-| **Public Tenders (Bund.de)** | Search Tenders | `german-public-tenders-vergabe-scraper` |
-| **Real Estate Foreclosures (ZVG)** | Search Foreclosures | `german-real-estate-foreclosure-zvg-scraper` |
-| **E-Invoice Suite** | Generate E-Invoice, Extract XML, Validate | `german-e-invoice-zugferd-xrechnung-suite` |
+| **B2B Directory Leads** | Search Directory Leads | [`AGrunert/german-b2b-leads-directory-scraper`](https://apify.com/AGrunert/german-b2b-leads-directory-scraper) |
+| **Impressum & CEO Enricher** | Enrich Domains | [`AGrunert/german-impressum-b2b-lead-enricher`](https://apify.com/AGrunert/german-impressum-b2b-lead-enricher) |
+| **Handelsregister & Insolvency KYB** | Verify Company | [`AGrunert/german-company-kyb-insolvency-scraper`](https://apify.com/AGrunert/german-company-kyb-insolvency-scraper) |
+| **Public Tenders (Bund.de)** | Search Tenders | [`AGrunert/german-public-tenders-vergabe-scraper`](https://apify.com/AGrunert/german-public-tenders-vergabe-scraper) |
+| **Real Estate Foreclosures (ZVG)** | Search Foreclosures | [`AGrunert/german-real-estate-foreclosure-zvg-scraper`](https://apify.com/AGrunert/german-real-estate-foreclosure-zvg-scraper) |
+| **E-Invoice Suite** | Generate E-Invoice, Extract XML, Validate | [`AGrunert/german-e-invoice-zugferd-xrechnung-suite`](https://apify.com/AGrunert/german-e-invoice-zugferd-xrechnung-suite) |
+
+> 🤖 **Using AI Agents (Claude Desktop / Cursor / Windsurf)?** Install our official Python MCP server directly from PyPI: `pip install german-b2b-mcp` or `uvx german-b2b-mcp` ([`german-b2b-data-suite`](https://github.com/andregrunert-ctrl/german-b2b-data-suite)).
 
 ---
 
