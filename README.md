@@ -22,6 +22,8 @@ Official **n8n Community Node** for the German & DACH B2B Data & Compliance Suit
 
 > 💡 **Looking for E-Invoicing?** Watch our [45-second ZUGFeRD & XRechnung Live Demo](https://youtu.be/xkDNnPjQxRo) on YouTube.
 
+> 🚀 **Try it live without coding in the Apify Cloud:** Run all 6 German B2B Actors & 13 Public Tasks directly in your browser with $5/month free Starter credits at [**apify.com/AGrunert**](https://apify.com/agrunert).
+
 ---
 
 ## 🚀 Installation
